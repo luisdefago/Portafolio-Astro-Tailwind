@@ -1,54 +1,22 @@
 ---
-import type { ProjectType } from "../types.ts";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-
-interface Props {
-  project: ProjectType;
-}
-
+import Carousel from "./Carousel.astro";
 const { project } = Astro.props;
-
-const settings = {
-  dots: true,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-};
-
-function renderImages(project: ProjectType) {
-  if (!project.img) return null;
-  return Object.values(project.img)
-    .map(
-      (img) => `<div><img src="${img}" alt="Image" class="rounded-lg" /></div>`
-    )
-    .join("");
-}
-
-function renderSkills(project: ProjectType) {
-  return project.skills
-    .map(
-      (skill) =>
-        `<li class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">${skill}</li>`
-    )
-    .join("");
-}
 ---
 
 <article class="max-w-lg mx-auto mb-8">
-  <h2 class="text-2xl font-bold mb-2">${project.name}</h2>
-  <p class="text-gray-600 mb-4">${project.description}</p>
-  <div class="slider-container">
-    <Slider {...settings}>
-      ${renderImages(project)}
-    </Slider>
-  </div>
+  <h2 class="text-2xl font-bold mb-2">{project.name}</h2>
+  <p class="text-gray-600 mb-4">{project.description}</p>
+  <Carousel images={Object.values(project.img || {})} />
   <ul class="mt-4">
-    ${renderSkills(project)}
+    {
+      project.skills.map((skill: string, index: number) => (
+        <li class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+          {skill}
+        </li>
+      ))
+    }
   </ul>
   <p class="text-gray-500 text-sm mt-4">
-    Inicio: ${project.init} - Fin: ${project.end}
+    Inicio: {project.init} - Fin: {project.end}
   </p>
 </article>

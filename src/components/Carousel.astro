@@ -1,0 +1,41 @@
+---
+interface Props {
+  images: string[];
+}
+
+const { images } = Astro.props;
+
+let currentSlide = 0;
+
+const nextSlide = () => {
+  currentSlide = (currentSlide + 1) % images.length;
+  updateSlides();
+};
+
+const prevSlide = () => {
+  currentSlide = (currentSlide - 1 + images.length) % images.length;
+  updateSlides();
+};
+
+const updateSlides = () => {
+  const slides = document.querySelectorAll(".slide");
+  slides.forEach((slide, index) => {
+    (slide as HTMLElement).style.display =
+      index === currentSlide ? "block" : "none";
+  });
+};
+
+setTimeout(updateSlides, 0);
+---
+
+<>
+  <button onclick="prevSlide()">Anterior</button>
+  {
+    images.map((img: string, index: number) => (
+      <div class={`slide ${index === currentSlide ? "active" : ""}`}>
+        <img src={img} alt={`Imagen ${index}`} class="rounded-lg" />
+      </div>
+    ))
+  }
+  <button onclick="nextSlide()">Siguiente</button>
+</>

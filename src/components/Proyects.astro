@@ -1,0 +1,9 @@
+---
+import projectsData from "../proyects.json";
+import type { ProjectType } from "../types";
+import Proyect from "./Proyect.astro";
+---
+
+<section>
+  {projectsData.map((project: ProjectType) => <Proyect project={project} />)}
+</section>
